@@ -17,12 +17,34 @@ curses.curs_set(0)
 win.border(0)
 win.nodelay(1)#-1
 
+# Snake & Food
+# Culebra & Comida
+snake = [(4,10),(4,9),(4,8)]
+food = [(10,20)]
+
+
 # Game Logic
 # Logica
 score = 0
 
-while True:
+ESC = 27
+key = curses.KEY_RIGHT
+
+
+while KEY != ESC:
+    win.addstr(0, 2, 'score ' + str(score) + ' ')
+    win.timeout(150 - (len(snake)) // 5 + len(snake)//10 % 120) # increase speed/aumenta velocidad
+
+    prev_key = key
     event = win.getch()
+    key = event if event != -1 else prev_key
+
+    if key not in [curses.KEY_LEFT, curses.KEY_RIGHT, curses.KEY_UP, curses.KEY_DOWN, ESC]:
+        key = prev_key
+
+    for c in snake:
+        win.addch(c[0], c[1], '*')
+    win.addch(food[0], food[1], '#')
     #...
 
 curses.endwin()
