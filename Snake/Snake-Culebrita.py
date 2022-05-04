@@ -7,10 +7,15 @@ import curses
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN
 from random import randint
 
+# Constantes
+
+WINDOW_ALTO = 60
+WINDOW_LARGO = 20 
+
 # Window setup
 # Ajustes de la ventana
 curses.initscr()
-win = curses.newwin(20,60,0,0) #x,y
+win = curses.newwin(WINDOW_LARGO,WINDOW_ALTO,0,0) #x,y
 win.keypad(1)
 curses.noecho()
 curses.curs_set(0)
@@ -19,10 +24,10 @@ win.nodelay(1)#-1
 
 # Snake & Food
 # Culebra & Comida
-snake = [(4,10),(4,9),(4,8)]
-food = [(10,20)]
+snake = [(4,4),(4,3),(4,2)]
+food = [(6,6)]
 
-
+win.addch(food[0], food[1], '#')
 # Game Logic
 # Logica
 score = 0
@@ -45,7 +50,7 @@ while key != ESC:
     # Calculate next coordinates
     # Calcular proximas coordenadas
     y = snake[0][0]
-    x = snake [0][1]
+    x = snake[0][1]
     if key == curses.KEY_DOWN:
         y += 1
     if key == curses.KEY_UP:
@@ -60,9 +65,9 @@ while key != ESC:
     # Check if we hit the border
     # Checkar si chocamos en algun borde
     if y == 0: break
-    if y == 19: break
+    if y == WINDOW_ALTO -1 : break
     if x == 0: break
-    if x == 59: break
+    if x == WINDOW_LARGO -1 : break
 
     # If snake runs over itself
     # Si la culebra choca consigo misma
@@ -74,10 +79,10 @@ while key != ESC:
         score += 1
         food = ()
         while food == ():
-            food = (randint(1,18), randint(1,58))
+            food = (randint(1,WINDOW_ALTO-2), randint(1,WINDOW_LARGO-2))
             if food in snake:
                 food = ()
-        win.addch(food[0], food[1], '#')
+                win.addch(food[0], food[1], '#')
     else:
         # Move snake
         # Mover culebra
