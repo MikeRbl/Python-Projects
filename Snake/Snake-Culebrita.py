@@ -31,7 +31,7 @@ ESC = 27
 key = curses.KEY_RIGHT
 
 
-while KEY != ESC:
+while key != ESC:
     win.addstr(0, 2, 'score ' + str(score) + ' ')
     win.timeout(150 - (len(snake)) // 5 + len(snake)//10 % 120) # increase speed/aumenta velocidad
 
@@ -42,9 +42,49 @@ while KEY != ESC:
     if key not in [curses.KEY_LEFT, curses.KEY_RIGHT, curses.KEY_UP, curses.KEY_DOWN, ESC]:
         key = prev_key
 
-    for c in snake:
-        win.addch(c[0], c[1], '*')
-    win.addch(food[0], food[1], '#')
+    # Calculate next coordinates
+    # Calcular proximas coordenadas
+    y = snake[0][0]
+    x = snake [0][1]
+    if key == curses.KEY_DOWN:
+        y += 1
+    if key == curses.KEY_UP:
+        y -= 1
+    if key == curses.KEY_LEFT:
+        x -= 1
+    if key == curses.KEY_RIGHT:
+        x += 1
+
+    snake.insert(0, (y, x))    # appdend / metodo append 0(n)
+
+    # Check if we hit the border
+    # Checkar si chocamos en algun borde
+    if y == 0: break
+    if y == 19: break
+    if x == 0: break
+    if x == 59: break
+
+    # If snake runs over itself
+    # Si la culebra choca consigo misma
+    if snake[0] in snake[1:]: break
+
+    if snake [0] == food:
+        # Eat food
+        # Come la comida
+        score += 1
+        food = ()
+        while food == ():
+            food = (randint(1,18), randint(1,58))
+            if food in snake:
+                food = ()
+        win.addch(food[0], food[1], '#')
+    else:
+        # Move snake
+        # Mover culebra
+        last = snake.pop()
+        win.addch(last[0], last[1], ' ')
+
+    win.addch(snake[0][0], snake[0][1], '*')
     #...
 
 curses.endwin()
