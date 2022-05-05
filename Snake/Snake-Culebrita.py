@@ -9,18 +9,18 @@ from random import randint
 
 # Constantes
 
-WINDOW_ALTO = 60
-WINDOW_LARGO = 20 
+WINDOW_ALTO = 60 #y
+WINDOW_LARGO = 20  #x
 
 # Window setup
 # Ajustes de la ventana
 curses.initscr()
-win = curses.newwin(WINDOW_LARGO,WINDOW_ALTO,0,0) #x,y
+win = curses.newwin( WINDOW_LARGO, WINDOW_ALTO, 0, 0) # y,x
 win.keypad(1)
 curses.noecho()
 curses.curs_set(0)
 win.border(0)
-win.nodelay(1)#-1
+win.nodelay(1) #-1
 
 # Snake & Food
 # Culebra & Comida
