@@ -15,7 +15,7 @@ WINDOW_LARGO = 20  #x
 # Window setup
 # Ajustes de la ventana
 curses.initscr()
-win = curses.newwin( WINDOW_LARGO, WINDOW_ALTO, 0, 0) # y,x
+win = curses.newwin (WINDOW_LARGO, WINDOW_ALTO, 0, 0) # y,x
 win.keypad(1)
 curses.noecho()
 curses.curs_set(0)
@@ -44,8 +44,22 @@ while key != ESC:
     event = win.getch()
     key = event if event != -1 else prev_key
 
+# Pause with space
+# Pausar con espacio
+    if key == ord(' '):                                            
+        key = -1                                                   
+        while key != ord(' '):
+            key = win.getch()
+        key = prevKey
+        continue
+
     if key not in [curses.KEY_LEFT, curses.KEY_RIGHT, curses.KEY_UP, curses.KEY_DOWN, ESC]:
         key = prev_key
+# If snake crosses the boundaries, make it enter from the other side
+    if snake[0][0] == 0: snake[0][0] = 18
+    if snake[0][1] == 0: snake[0][1] = 58
+    if snake[0][0] == 19: snake[0][0] = 1
+    if snake[0][1] == 59: snake[0][1] = 1
 
     # Calculate next coordinates
     # Calcular proximas coordenadas
